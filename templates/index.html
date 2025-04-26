@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Document Generator</h1>
+        <p>Upload an Excel sheet, a Word template, and the "path" folder containing images to generate your document.</p>
+
+        <!-- Display flash messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Upload form -->
+        <form id="upload-form" action="{{ url_for('generate_document') }}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="excel_file">Excel Sheet (.xlsx):</label>
+                <input type="file" id="excel_file" name="excel_file" accept=".xlsx" required>
+            </div>
+            <div class="form-group">
+                <label for="template_file">Word Template (.docx):</label>
+                <input type="file" id="template_file" name="template_file" accept=".docx" required>
+            </div>
+            <div class="form-group">
+                <label for="image_folder">Image Folder (select the "path" folder):</label>
+                <input type="file" id="image_folder" name="image_folder" webkitdirectory directory accept="image/*" required>
+            </div>
+            <button type="submit" id="generate-btn">Generate Document</button>
+        </form>
+
+        <div id="loading" style="display: none;">
+            <p>Generating document, please wait...</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
